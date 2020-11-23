@@ -93,8 +93,8 @@ for i in tqdm(range(start_id, stop_id, block_size)):
     a, b = str(i).zfill(8), str(i+block_size).zfill(8)
 
     filename_pkl = f"{down_dir}/{a}_{b}.pkl"
-
-    if(os.path.exists(filename_pkl)==True):
+    filename_zip = filename_pkl.replace('.pkl','.zip')
+    if(os.path.exists(filename_zip)==True):
         continue
 
     print(f" block urls: [{i},{i+block_size}]")
@@ -110,7 +110,7 @@ for i in tqdm(range(start_id, stop_id, block_size)):
     logging.info(f"Save to file: {filename_pkl}")
     logging.info(f"Filtering   : {len(vacancies)}, {len(vacancies_filtered)}")
 
-    write_to_pickle(filename_pkl, vacancies)
+    write_to_pickle(filename_pkl, vacancies_filtered)
 
     with zipfile.ZipFile(filename_pkl.replace('.pkl','.zip'), 'w', zipfile.ZIP_DEFLATED) as myzip:
         myzip.write(filename_pkl, os.path.basename(filename_pkl))
