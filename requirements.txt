@@ -1,0 +1,4 @@
+tqdm
+p_tqdm
+bs4
+requests

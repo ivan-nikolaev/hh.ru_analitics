@@ -1,11 +1,11 @@
-
-import tools.request
+import requests
+import project_tools.request
 from multiprocessing.dummy import Pool as ThreadPool
 import pickle
 import os
-from tools.json_tools import *
+from project_tools.json_tools import *
 import time
-
+import bs4
 
 
 def read_list_from_file(filename):
@@ -29,10 +29,10 @@ def GeneratorUrlsVaconcies(start, end):
         yield f"https://api.hh.ru/vacancies/{id}"
 
 def MainFunction(url):
-    cr = tools.request.ControlRequestClass()
+    #cr = project_tools.request.ControlRequestClass()
     tries = 5
     while(tries>0):
-        responce = cr.GetHTML(url)
+        responce = requests.get(url)#cr.GetHTML(url)
         if(responce == '' or responce == 'error'):
             tries -=1
             print(f"one more time... {tries}")
