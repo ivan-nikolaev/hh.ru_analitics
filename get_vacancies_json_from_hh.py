@@ -1,112 +1,117 @@
-import requests
-import project_tools.request
-from multiprocessing.dummy import Pool as ThreadPool
-import pickle
 import os
-from project_tools.json_tools import *
+from tqdm import tqdm
+import zipfile
+import json
+import shutil
+import requests
+import logging
+from multiprocessing.dummy import Pool as ThreadPool
+from project_tools.pickle_tools import write_to_pickle
+
+import threading
+from concurrent.futures import ThreadPoolExecutor
 import time
-import bs4
+
+from tqdm_multi_thread import TqdmMultiThreadFactory
 
 
-def read_list_from_file(filename):
-    with open(filename, 'r') as f:
-        x = f.readlines()
-        ids = [int(id) for id in x]
-    return x
 
-def GeneratorUrlsVaconcies2(start, end):
-    base_dir = "F:\\!hh.ru\\bad_ids"
-    ids = read_list_from_file(f'{base_dir}\\{str(start).zfill(8)}_{str(end).zfill(8)}_bad.txt')
-
-    ids = [int(id) for id in ids]
-    print(len(ids))
-    for id in ids:
-        print(id)
-        yield f"https://api.hh.ru/vacancies/{id}"
-
-def GeneratorUrlsVaconcies(start, end):
+def generator_urls_vacancies(start, end):
     for id in range(start, end):
         yield f"https://api.hh.ru/vacancies/{id}"
 
-def MainFunction(url):
-    #cr = project_tools.request.ControlRequestClass()
-    tries = 5
-    while(tries>0):
-        responce = requests.get(url)#cr.GetHTML(url)
-        if(responce == '' or responce == 'error'):
-            tries -=1
-            print(f"one more time... {tries}")
-        else:
-            vacancy = json.loads(responce)
-            #CheckErrorsInVacancy(vacancy)
-            return vacancy
 
-def CheckSpesializationOfVacancy(vacancy_json, id_spesialization = '1'):
-    if('specializations' in vacancy_json):
-        for spesialization in vacancy_json['specializations']:
-            try:
-                if(spesialization['profarea_id']==id_spesialization):
-                    return True
-            except Exception:
-                print(Exception)
-    return False
-
-def CheckErrorsInVacancy(vacansy_json):
+def is_error_vacancy(vacansy_json):
     if('errors' in vacansy_json):
-        #pp_json(vacansy_json)
-        return False
-    else:
         return True
+    else:
+        return False
 
-def WriteToPickle(filename, data):
-    with open(filename, 'wb') as f:
-        pickle.dump(data, f)
+
+def get_vacancy_json(url, tries=5):
+    while(tries>0):
+        try:
+            responce = requests.get(url, timeout=3)
+            #print(url, responce, responce.status_code, responce.text)
+            if responce.status_code == 200:
+                return json.loads(responce.text)
+            elif responce.status_code == 404:
+                return json.loads(responce.text)
+
+        except requests.exceptions.HTTPError as errh:
+            print("Http Error:", errh)
+        except requests.exceptions.ConnectionError as errc:
+            print("Error Connecting:", errc)
+        except requests.exceptions.Timeout as errt:
+            print("Timeout Error:", errt)
+        except requests.exceptions.RequestException as err:
+            print("OOps: Something Else", err)
+        except Exception:
+            pass
+        tries -=1
+
+    return json.loads('{}')
+
+
+def multy_thread_downloading_func(urls, threads=10):
+    pool = ThreadPool(threads)
+    vacancies = pool.map(get_vacancy_json, urls)
+    pool.close()
+    pool.join()
+
+    return vacancies
+
+
+#%%
+
+#main_dir = "f:/!hh.ru/vacancies_pickle_all_add/downloading/"
+main_dir = "e:/!hh.ru/vacancies_pickle_all_2020"
+down_dir = main_dir +'/downloading'
+
+logging.basicConfig(handlers=[logging.FileHandler(filename=f'{main_dir}\\log_downloading_vacancies.log',
+                              encoding='utf-8',
+                              mode='a+')],
+                    format="%(asctime)s %(name)s:%(levelname)s:%(message)s",
+                    datefmt="%F %A %T",
+                    level=logging.INFO)
 
 
 #скачиваем по блокам вакансии с hh
-block_size = 10000
-start_id = 00000000
-stop_id  = 15000000
-threads = 10
-main_dir = "f:/!hh.ru/vacancies_pickle_all_add/downloading/"
+block_size, start_id, stop_id = 10000, 0, 1000000
 
-for i in range(start_id, stop_id, block_size):
 
-    a = str(i).zfill(8)
-    b = str(i+block_size).zfill(8)
+if not os.path.exists(main_dir):
+    os.mkdir(main_dir)
 
-    filename = f"{main_dir}{a}_{b}.pickle"
+if not os.path.exists(main_dir):
+    shutil.rmtree(down_dir)
+    os.mkdir(down_dir)
 
-    print(filename)
-    if(os.path.exists(filename)==False):
-        print(filename)
-        A = time.time()
-        print(f"Генерируем ссылки на очередной блок вакансий: [{i},{i+block_size}]")
-        urls = GeneratorUrlsVaconcies2(i,i+block_size)
+#%%
+for i in tqdm(range(start_id, stop_id, block_size)):
 
-        pool = ThreadPool(threads)
-        vacancies = []
-        vacancies = pool.map(MainFunction, urls)
+    a, b = str(i).zfill(8), str(i+block_size).zfill(8)
 
-        pool.close()
-        pool.join()
+    filename_pkl = f"{down_dir}/{a}_{b}.pkl"
 
-        #print(f'Количество вакансий до фильтрации: {len(vacancies)}')
+    if(os.path.exists(filename_pkl)==True):
+        continue
 
-        vacancies = list(filter(None, vacancies))
-        #print(f'Количество вакансий после фильтрации None: {len(vacancies)}')
+    print(f" block urls: [{i},{i+block_size}]")
+    urls = generator_urls_vacancies(i, i + block_size)
 
-        vacancies = list(filter(CheckErrorsInVacancy, vacancies))
-        #print(f'Количество вакансий после фильтрации Пустых_Errors: {len(vacancies)}')
+    vacancies = multy_thread_downloading_func(urls)
 
-        #vacancies = list(filter(CheckSpesializationOfVacancy, vacancies))
-        #print(f'Количество вакансий после фильтрации id_spesialization = 1: {len(vacancies)}')
+    filter_func = lambda vacancy: False if ('errors' in vacancy) or (vacancy=={}) or (vacancy==None) else True
+    vacancies_filtered = list(filter(filter_func, vacancies))
 
-        #print(vacancies)
-        WriteToPickle(filename, vacancies)
-        B = time.time()
+    #print(len(vacancies), len(vacancies_filtered))
 
-        a = round((B - A), 2)
-        b = ((stop_id - i) / block_size)
-        print(a, b, round((a*b)/60/60,2))
-        print("=========================================================================")
+    logging.info(f"Save to file: {filename_pkl}")
+    logging.info(f"Filtering   : {len(vacancies)}, {len(vacancies_filtered)}")
+
+    write_to_pickle(filename_pkl, vacancies)
+
+    with zipfile.ZipFile(filename_pkl.replace('.pkl','.zip'), 'w', zipfile.ZIP_DEFLATED) as myzip:
+        myzip.write(filename_pkl, os.path.basename(filename_pkl))
+    os.remove(filename_pkl)

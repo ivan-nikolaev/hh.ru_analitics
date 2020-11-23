@@ -1,4 +1,3 @@
 tqdm
-p_tqdm
-bs4
 requests
+tqdm_multi_thread
