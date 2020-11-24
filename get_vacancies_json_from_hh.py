@@ -28,7 +28,7 @@ def is_error_vacancy(vacansy_json):
         return False
 
 
-def get_vacancy_json(url, tries=5):
+def get_vacancy_json(url, tries=10):
     while(tries>0):
         try:
             responce = requests.get(url, timeout=3)
@@ -48,7 +48,9 @@ def get_vacancy_json(url, tries=5):
             print("OOps: Something Else", err)
         except Exception:
             pass
-        tries -=1
+        tries -= 1
+        print(f'try one more time {tries}')
+
 
     return json.loads('{}')
 
@@ -77,7 +79,7 @@ logging.basicConfig(handlers=[logging.FileHandler(filename=f'{main_dir}\\log_dow
 
 
 #скачиваем по блокам вакансии с hh
-block_size, start_id, stop_id = 10000, 0, 1000000
+block_size, start_id, stop_id = 10000, 20000000, 30000000
 
 
 if not os.path.exists(main_dir):
