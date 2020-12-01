@@ -79,7 +79,7 @@ logging.basicConfig(handlers=[logging.FileHandler(filename=f'{main_dir}\\log_dow
 
 
 #скачиваем по блокам вакансии с hh
-block_size, start_id, stop_id = 10000, 20000000, 30000000
+block_size, start_id, stop_id = 10000, 30000000, 41000000
 
 
 if not os.path.exists(main_dir):
