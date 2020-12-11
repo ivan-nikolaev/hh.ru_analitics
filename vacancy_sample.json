@@ -1,0 +1,132 @@
+{
+    'id': '224',
+    'premium': False,
+    'billing_type': {
+        'id': 'standard',
+        'name': 'Стандарт'
+    },
+    'relations': [],
+    'name': 'Project manager (ERP, SCM)',
+    'insider_interview': None,
+    'response_letter_required': False,
+    'area': {
+        'id': '1',
+        'name': 'Москва',
+        'url': 'https://api.hh.ru/areas/1'
+    },
+    'salary': {
+        'from': None,
+        'to': 2000,
+        'currency': 'USD',
+        'gross': None
+    },
+    'type': {
+        'id': 'open',
+        'name': 'Открытая'
+    },
+    'address': None,
+    'allow_messages': True,
+    'site': {
+        'id': 'hh',
+        'name': 'hh.ru'
+    },
+    'experience': {
+        'id': 'between1And3',
+        'name': 'От 1 года до 3 лет'
+    },
+    'schedule': {
+        'id': 'fullDay',
+        'name': 'Полный день'
+    },
+    'employment': {
+        'id': 'full',
+        'name': 'Полная занятость'
+    },
+    'department': None,
+    'contacts': None,
+    'description': 'Вакансия открыта в западной компании, специализирующейся на разработке и интеграции решений (ERP, SCM сис-м) для промышленных предприятий, дистрибуторских компаний. \r<br />\nКомпании интересны специалисты в области внедрения и руководства проектами внедрения крупных систем. \r<br />\n\r<br />\nЗадачи: \r<br />\nВысоко профессиональная работа с клиентом  - внедрение ERP, SCM  систем на предприятии в роли руководителя проекта внедрения. \r<br />\n\r<br />\nФункции: \r<br />\nУчастие в продаже в качестве технического специалиста; \r<br />\nформирование проекта (сроки, ресурсы, стоимость), \r<br />\nпроработка с клиентом потребностей и возможностей их реализации в системе; \r<br />\nорганизация запуска проекта и его сопровождение (организация предпроектного обследования предприятия, обучение сотрудников, привлечение технических специалистов для доработки системы, настройки системы); \r<br />\nсдача проекта в эксплуатацию, \r<br />\nорганизация технической поддержки. Командировки часто.\r<br />\n\r<br />\nТребования: \r<br />\nВ/о (экономическое, техническое), \r<br />\nмужчина/женщина, 27-45 лет, \r<br />\nопыт внедрения ERP систем (BAAN, MFG/Pro, MAX, Scala, NS-2000, др.) не менее 1 года, хорошее знание особенностей бизнес процессов промышленных предприятий и дистрибуторискх компаний (цепочки продаж, логистика!);  \r<br />\nопыт работы с крупными заказчиками, \r<br />\nнавыки проведение презентаций; \r<br />\nумение работать самостоятельно; \r<br />\nанглийский язык (разговорный); \r<br />\nориентированность на результат, \r<br />\nумение убеждать и отстаивать свою точку зрения, \r<br />\nпрезентабельность, стрессоустойчивость, способность к быстрому обучению. \r<br />\n\r<br />\nУсловия:\r<br />\nfix 1500 - 2000$ (зависит от квалификации) на испытательный срок, \r<br />\nпосле fix + %; компенсационный пакет – обучение (не менее 2-х раз в год), страховка.',
+    'branded_description': None,
+    'vacancy_constructor_template': None,
+    'key_skills': [],
+    'accept_handicapped': False,
+    'accept_kids': False,
+    'archived': True,
+    'response_url': None,
+    'specializations': [{
+            'id': '1.221',
+            'name': 'Программирование, Разработка',
+            'profarea_id': '1',
+            'profarea_name': 'Информационные технологии, интернет, телеком'
+        }, {
+            'id': '1.272',
+            'name': 'Системная интеграция',
+            'profarea_id': '1',
+            'profarea_name': 'Информационные технологии, интернет, телеком'
+        }, {
+            'id': '1.113',
+            'name': 'Консалтинг, Аутсорсинг',
+            'profarea_id': '1',
+            'profarea_name': 'Информационные технологии, интернет, телеком'
+        }, {
+            'id': '1.225',
+            'name': 'Продажи',
+            'profarea_id': '1',
+            'profarea_name': 'Информационные технологии, интернет, телеком'
+        }, {
+            'id': '1.50',
+            'name': 'Системы управления предприятием (ERP)',
+            'profarea_id': '1',
+            'profarea_name': 'Информационные технологии, интернет, телеком'
+        }, {
+            'id': '1.211',
+            'name': 'Поддержка, Helpdesk',
+            'profarea_id': '1',
+            'profarea_name': 'Информационные технологии, интернет, телеком'
+        }, {
+            'id': '1.246',
+            'name': 'Развитие бизнеса',
+            'profarea_id': '1',
+            'profarea_name': 'Информационные технологии, интернет, телеком'
+        }, {
+            'id': '1.327',
+            'name': 'Управление проектами',
+            'profarea_id': '1',
+            'profarea_name': 'Информационные технологии, интернет, телеком'
+        }, {
+            'id': '1.25',
+            'name': 'Аналитик',
+            'profarea_id': '1',
+            'profarea_name': 'Информационные технологии, интернет, телеком'
+        }
+    ],
+    'code': None,
+    'hidden': False,
+    'quick_responses_allowed': False,
+    'driver_license_types': [],
+    'accept_incomplete_resumes': False,
+    'employer': {
+        'id': '2338',
+        'name': 'BAILS Recruitment',
+        'url': 'https://api.hh.ru/employers/2338',
+        'alternate_url': 'https://hh.ru/employer/2338',
+        'logo_urls': {
+            '90': 'https://hhcdn.ru/employer-logo/628799.jpeg',
+            '240': 'https://hhcdn.ru/employer-logo/628800.jpeg',
+            'original': 'https://hhcdn.ru/employer-logo-original/232434.JPG'
+        },
+        'vacancies_url': 'https://api.hh.ru/vacancies?employer_id=2338',
+        'trusted': True
+    },
+    'published_at': '2003-09-05T00:00:00+0400',
+    'created_at': '2003-09-05T00:00:00+0400',
+    'negotiations_url': None,
+    'suitable_resumes_url': None,
+    'apply_alternate_url': 'https://hh.ru/applicant/vacancy_response?vacancyId=224',
+    'has_test': False,
+    'test': None,
+    'alternate_url': 'https://hh.ru/vacancy/224',
+    'working_days': [],
+    'working_time_intervals': [],
+    'working_time_modes': [],
+    'accept_temporary': False
+}
