@@ -28,3 +28,40 @@ def get_vacancies_from_dir_with_zips(dir_with_zips, first_n_files = -1):
     for file_zip in files_zip:
         for vacancy in extract_zip_by_vacancy(file_zip):
             yield vacancy
+
+
+def get_specializations_list(vacancy_json):
+    try:
+        return [v['id'] for v in vacancy_json['specializations']]
+    except:
+        return []
+
+
+def get_id_specs_areas_pub_create_infos(vacancy_json):
+    vacancy = {}
+    try:
+        vacancy['id'] = vacancy_json['id']
+    except:
+        vacancy['id'] = None
+
+    try:
+        vacancy['specializations_ids'] = list(set([spec['id'] for spec in vacancy_json['specializations']]))
+    except:
+        vacancy['specializations_ids'] = []
+
+    try:
+        vacancy['profarea_ids'] = list(set([spec['profarea_id'] for spec in vacancy_json['specializations']]))
+    except:
+        vacancy['profarea_ids'] = []
+
+    try:
+        vacancy['published_at'] = vacancy_json['published_at']
+    except:
+        vacancy['published_at'] = None
+
+    try:
+        vacancy['created_at'] = vacancy_json['created_at']
+    except:
+        vacancy['created_at'] = None
+
+    return vacancy
